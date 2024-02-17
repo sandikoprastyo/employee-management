@@ -1,0 +1,73 @@
+<!-- employee-list.component.html -->
+
+<div class="employee-list">
+  <div class="header">
+    <h2>Employee List Page</h2>
+    <div class="action-list">
+      <button mat-raised-button color="warn" (click)="onLogout()">
+        Logout
+      </button>
+      <button mat-raised-button color="primary" (click)="onAddEmployee()">
+        Add Employee
+      </button>
+
+      <input
+        class="w-80 h-10 p-2 border-slate-800 border-solid border-2 rounded-md"
+        type="text"
+        matInput
+        placeholder="search...."
+        [(ngModel)]="searchText"
+        (input)="onSearch()"
+      />
+    </div>
+  </div>
+
+  <div class="overflow-x-auto">
+    <table mat-table [dataSource]="employees" matSort>
+      <!-- Table Header -->
+      <ng-container
+        matColumnDef="{{ column }}"
+        *ngFor="let column of displayedColumns"
+      >
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          {{ column | titlecase }}
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <!-- Check if the column is 'actions' and add buttons accordingly -->
+          <ng-container *ngIf="column !== 'actions'; else actionsColumn">
+            {{ element[column] }}
+          </ng-container>
+          <ng-template #actionsColumn>
+            <!-- Buttons for 'actions' column -->
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onEditEmployee(element.id)"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              (click)="onDeleteEmployee(element.id)"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </ng-template>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+    </table>
+  </div>
+
+  <!-- Pagination -->
+  <mat-paginator
+    [pageSizeOptions]="pageSizeOptions"
+    [pageSize]="pageSize"
+    [pageIndex]="currentPage - 1"
+    [length]="totalItems"
+    (page)="onPageChange($event)"
+  ></mat-paginator>
+</div>

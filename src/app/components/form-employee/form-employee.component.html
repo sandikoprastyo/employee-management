@@ -1,0 +1,162 @@
+<form class="example-form">
+  <table class="example-full-width" cellspacing="0">
+    <tr>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>First name</mat-label>
+          <input
+            matInput
+            class="ml-5 mr-10"
+            type="text"
+            name="firstname"
+            id="firstname"
+            [(ngModel)]="employee.firstname"
+          />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Last Name</mat-label>
+          <input
+            matInput
+            class="ml-5 mr-10"
+            type="text"
+            name="lastname"
+            id="lastname"
+            [(ngModel)]="employee.lastname"
+          />
+        </mat-form-field>
+      </td>
+    </tr>
+    <tr>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Email</mat-label>
+          <input
+            type="email"
+            class="ml-5 mr-10"
+            name="email"
+            id="email"
+            matInput
+            [(ngModel)]="employee.email"
+            placeholder="jhondoe@gmail.com"
+          />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Birthdate</mat-label>
+          <input
+            matInput
+            [matDatepicker]="picker"
+            [max]="todayDate"
+            id="birthdate"
+            name="birthdate"
+            class="ml-5 mr-10"
+            [(ngModel)]="employee.birthdate"
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="picker"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #picker></mat-datepicker>
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Basic Salary</mat-label>
+          <input
+            matInput
+            type="number"
+            id="basicsalary"
+            name="basicsalary"
+            [(ngModel)]="employee.basicsalary"
+            placeholder="10000000"
+          />
+        </mat-form-field>
+      </td>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Status</mat-label>
+          <mat-select
+            matSelect
+            id="status"
+            name="status"
+            [(ngModel)]="employee.status"
+          >
+            <mat-option>None</mat-option>
+            <mat-option value="Married">Married</mat-option>
+            <mat-option value="Single">Single</mat-option>
+            <mat-option value="Other">Other</mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </tr>
+
+    <tr>
+      <td>
+        <mat-form-field class="example-full-width">
+          <input
+            matInput
+            type="text"
+            placeholder="Search Group"
+            aria-label="Search Group"
+            [matAutocomplete]="auto"
+            [formControl]="groupControl"
+            (input)="filterGroups($event)"
+          />
+          <mat-autocomplete
+            autoActiveFirstOption
+            #auto="matAutocomplete"
+            (optionSelected)="selectGroup($event.option.viewValue)"
+          >
+            <mat-option *ngFor="let group of filteredGroups" [value]="group">
+              {{ group }}
+            </mat-option>
+          </mat-autocomplete>
+        </mat-form-field>
+
+        <!-- <mat-form-field class="example-full-width">
+          <mat-label>Group</mat-label>
+          <mat-select
+            matSelect
+            [(value)]="selectedGroup"
+            [(ngModel)]="employee.group"
+          >
+            <input
+              matInput
+              type="text"
+              id="group"
+              name="group"
+              class="input-search-group"
+              placeholder="Search..."
+              onchange="filterGroups"
+            />
+
+            <mat-option *ngFor="let group of groups" [value]="group">
+              {{ group }}
+            </mat-option>
+          </mat-select>
+        </mat-form-field> -->
+      </td>
+      <td>
+        <mat-form-field class="example-full-width">
+          <mat-label>Description</mat-label>
+          <textarea
+            matInput
+            placeholder="Description..."
+            maxlength="150"
+            id="description"
+            name="description"
+            [(ngModel)]="employee.description"
+          >
+          </textarea>
+        </mat-form-field>
+      </td>
+    </tr>
+  </table>
+</form>

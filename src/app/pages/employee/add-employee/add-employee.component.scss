@@ -1,0 +1,15 @@
+.header{
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.body{
+    padding: 20px;
+    margin-left: 220px;
+    margin-right: 220px;
+}
+
+mat-card-actions{
+    gap: 10px
+}

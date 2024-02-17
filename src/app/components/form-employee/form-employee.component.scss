@@ -1,0 +1,21 @@
+.example-full-width {
+  width: 100%;
+}
+
+mat-hint {
+  color: gray;
+}
+
+#description {
+  height: 20px;
+}
+
+#group {
+  padding: 19px;
+  border-radius: 10px;
+  border: solid 1px black;
+
+  ::placeholder {
+    color: red;
+  }
+}

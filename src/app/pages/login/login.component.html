@@ -1,0 +1,41 @@
+<div class="wrapper-form">
+  <div>
+    <h3>Login</h3>
+  </div>
+  <form (ngSubmit)="onSubmit()" #loginForm="ngForm">
+    <mat-form-field class="username-form-field">
+      <mat-label>Username</mat-label>
+      <input
+        matInput
+        id="username"
+        name="username"
+        class="rounded-md"
+        type="text"
+        [(ngModel)]="user.username"
+        required
+      />
+    </mat-form-field>
+
+    <mat-form-field class="password-form-field">
+      <mat-label>Password</mat-label>
+      <input
+        matInput
+        id="password"
+        name="password"
+        class="rounded-md"
+        type="password"
+        [(ngModel)]="user.password"
+        required
+      />
+    </mat-form-field>
+
+    <button
+      type="submit"
+      [disabled]="loginForm.invalid"
+      class="rounded-md bg-slate-950 w-220 pt-2 pb-2 pl-10 pr-10 text-white"
+    >
+      Submit
+    </button>
+  </form>
+  <p>{{ errMsg }}</p>
+</div>

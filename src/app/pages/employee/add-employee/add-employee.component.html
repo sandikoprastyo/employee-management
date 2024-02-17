@@ -1,0 +1,13 @@
+<mat-card-header class="header">
+  <h1>Add Employee</h1>
+</mat-card-header>
+
+<mat-card class="body">
+  <mat-card-content>
+    <app-form-employee [employee]="employee" [selected]="selected"/>
+  </mat-card-content>
+  <mat-card-actions>
+    <button mat-raised-button color="primary" mat-button class="pl-10" (click)="handleSave()">Save</button>
+    <button mat-raised-button color="warn" mat-button class="pl-10" (click)="handleBackBtn()">Back</button>
+  </mat-card-actions>
+</mat-card>

@@ -1,0 +1,20 @@
+<div>
+    <h2>Edit Employee</h2>
+  
+    <div *ngIf="employee">
+      <label>First Name: </label>
+      <input [(ngModel)]="employee.firstName" />
+  
+      <label>Last Name: </label>
+      <input [(ngModel)]="employee.lastName" />
+  
+      <!-- Add more input fields for other properties as needed -->
+  
+      <button (click)="onSaveChanges()">Save Changes</button>
+    </div>
+  
+    <div *ngIf="!employee">
+      <p>Employee not found.</p>
+    </div>
+  </div>
+  
