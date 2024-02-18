@@ -9,9 +9,11 @@ import { FormControl } from '@angular/forms';
   styleUrls: ['./form-employee.component.scss'],
 })
 export class FormEmployeeComponent {
-  todayDate: string | null;
+  [x: string]: any;
+  todayDate: Date | null;
   @Input() employee: any;
   @Input() selected: any;
+  @Input() type: any;
 
   selectedGroup: string | undefined;
   groupControl = new FormControl();
@@ -30,7 +32,7 @@ export class FormEmployeeComponent {
   filteredGroups: string[] = this.groups;
 
   constructor(private datePipe: DatePipe) {
-    this.todayDate = this.datePipe.transform(new Date(), 'yyyy-MM-dd');
+    this.todayDate = new Date();
     this.filteredGroups = this.groups;
   }
 
@@ -38,8 +40,24 @@ export class FormEmployeeComponent {
     this.employee.group = group;
   }
 
+  formatDate(date: Date): string {
+    return this.datePipe.transform(date, 'DD-MM-YYYY') || '';
+  }
+
+  updateEmployeeBirthDate(value: any): void {
+    this.employee.birthDate = new Date(value).getTime();
+  }
+
+  updateEmployeeDescription(value: any): void {
+    this.employee.description = new Date(value).getTime();
+  }
+
+  convertTimestampToDate(timestamp: number): string {
+    return new Date(timestamp).toISOString();
+  }
+
   filterGroups(event: any): void {
-    const value =  event.target.value;
+    const value = event.target.value;
     this.filteredGroups = this.groups.filter((group) =>
       group?.toLowerCase().includes(value?.toLowerCase())
     );

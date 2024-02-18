@@ -1,5 +1,16 @@
 .example-full-width {
   width: 100%;
+
+  @media screen and (max-width: 568px) {
+    tr {
+      display: flex;
+      flex-wrap: wrap;
+
+      td {
+        width: 100%;
+      }
+    }
+  }
 }
 
 mat-hint {

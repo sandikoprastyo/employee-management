@@ -1,5 +1,3 @@
-<!-- employee-list.component.html -->
-
 <div class="employee-list">
   <div class="header">
     <h2>Employee List Page</h2>
@@ -10,32 +8,37 @@
       <button mat-raised-button color="primary" (click)="onAddEmployee()">
         Add Employee
       </button>
-
       <input
-        class="w-80 h-10 p-2 border-slate-800 border-solid border-2 rounded-md"
+        class="w-80 h-10 p-2 border-slate-800 text-neutral-950 border-solid border-2 rounded-md"
         type="text"
         matInput
-        placeholder="search...."
+        placeholder="Search...."
         [(ngModel)]="searchText"
         (input)="onSearch()"
       />
     </div>
   </div>
 
-  <div class="overflow-x-auto">
+  <div class="overflow-x-auto rounded-lg">
+    <!-- Table -->
     <table mat-table [dataSource]="employees" matSort>
       <!-- Table Header -->
       <ng-container
-        matColumnDef="{{ column }}"
         *ngFor="let column of displayedColumns"
+        matColumnDef="{{ column }}"
       >
         <th mat-header-cell *matHeaderCellDef mat-sort-header>
-          {{ column | titlecase }}
+          {{ column === "birthDate" ? "Birth Date" : (column | titlecase) }}
         </th>
         <td mat-cell *matCellDef="let element">
-          <!-- Check if the column is 'actions' and add buttons accordingly -->
           <ng-container *ngIf="column !== 'actions'; else actionsColumn">
-            {{ element[column] }}
+            {{
+              column === "basicSalary"
+                ? formatCurrency(element[column])
+                : column === "birthDate" || column === "description"
+                ? convertTimestampToDate(element[column])
+                : element[column]
+            }}
           </ng-container>
           <ng-template #actionsColumn>
             <!-- Buttons for 'actions' column -->
@@ -57,8 +60,10 @@
         </td>
       </ng-container>
 
+      <!-- Table Rows -->
       <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
-      <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns">
+      </tr>
     </table>
   </div>
 
@@ -69,5 +74,6 @@
     [pageIndex]="currentPage - 1"
     [length]="totalItems"
     (page)="onPageChange($event)"
-  ></mat-paginator>
+  >
+  </mat-paginator>
 </div>

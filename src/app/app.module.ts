@@ -28,6 +28,7 @@ import { FormEmployeeComponent } from './components/form-employee/form-employee.
 import { DatePipe } from '@angular/common';
 import { MatAutocompleteModule } from '@angular/material/autocomplete';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
 
 @NgModule({
   declarations: [
@@ -40,6 +41,7 @@ import { ReactiveFormsModule } from '@angular/forms';
     FormEmployeeComponent,
   ],
   imports: [
+    MatSnackBarModule,
     ReactiveFormsModule,
     MatAutocompleteModule,
     MatDatepickerModule,

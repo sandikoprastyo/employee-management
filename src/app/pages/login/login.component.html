@@ -32,7 +32,7 @@
     <button
       type="submit"
       [disabled]="loginForm.invalid"
-      class="rounded-md bg-slate-950 w-220 pt-2 pb-2 pl-10 pr-10 text-white"
+      class="rounded-md {{ loginForm.invalid ? 'bg-gray-400 cursor-not-allowed' : 'bg-slate-950 cursor-pointer' }} w-220 pt-2 pb-2 pl-10 pr-10 text-white"
     >
       Submit
     </button>

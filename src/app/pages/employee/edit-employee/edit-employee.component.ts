@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { EmployeeService } from '../../../../services/employee.service';
 import { EmployeeListComponent } from '../employee-list/employee-list.component';
@@ -10,35 +10,35 @@ import { EmployeeListComponent } from '../employee-list/employee-list.component'
 })
 export class EditEmployeeComponent implements OnInit {
   employee: EmployeeListComponent | undefined;
+  type = 'edit';
+  selected = '';
+  id: string | null = null;
 
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     private employeeService: EmployeeService
-  ) {
-    this.route.params.subscribe(params => {
-      const id = params['id'];
-      console.log(id)
-    });
-  }
+  ) {}
 
   ngOnInit(): void {
-    const id = Number(this.route.snapshot.paramMap.get('id'));
-    this.employee = this.employeeService.getEmployeeById(id);
+    this.id = this.route.snapshot.paramMap.get('id');
+    if (this.id) {
+      this.employee = this.employeeService.getEmployeeById(this.id)[0];
+    }
+
     if (!this.employee) {
-      this.router.navigateByUrl('/employee-list');
+      this.router.navigateByUrl('/dashboard');
     }
   }
 
-  onSaveChanges(): void {
-    // Implement logic to save the changes to the employee
-    // For example, you can call a service method to update the employee details
+  async handleSave(): Promise<void> {
     if (this.employee) {
-      this.employeeService.updateEmployee(this.employee);
-      console.log(`Changes saved for employee with ID: ${this.employee.id}`);
+      await this.employeeService.updateEmployee(this.employee);
+      await this.router.navigateByUrl('/dashboard');
     }
+  }
 
-    // Redirect back to the employee list page
-    this.router.navigateByUrl('/employee-list');
+  handleBackBtn() {
+    this.router.navigateByUrl('/dashboard');
   }
 }

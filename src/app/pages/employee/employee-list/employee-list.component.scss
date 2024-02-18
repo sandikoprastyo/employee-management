@@ -1,9 +1,12 @@
 .employee-list {
   .header {
-    padding: 15px 10px;
     display: flex;
-    justify-content: space-between;
+    padding: 15px 10px;
     align-items: center;
+    justify-content: space-between;
+    @media screen and (max-width: 575px) {
+      flex-wrap: wrap;
+    }
 
     .action-list {
       display: flex;
@@ -11,6 +14,10 @@
       align-items: center;
       justify-content: center;
       flex-direction: row-reverse;
+      @media screen and (max-width: 575px) {
+        width: 100%;
+        flex-wrap: wrap;
+      }
     }
 
     .form-field-search {

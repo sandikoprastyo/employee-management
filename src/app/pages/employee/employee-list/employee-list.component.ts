@@ -1,12 +1,11 @@
 // employee-list.component.ts
-
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatPaginator, PageEvent } from '@angular/material/paginator';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { EmployeeService } from '../../../../services/employee.service';
 import { Router } from '@angular/router';
-import dataDummy from 'src/assets/dataDummy';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 interface Employee {
   id: number;
@@ -15,12 +14,12 @@ interface Employee {
   password: string;
   lastName: string;
   email: string;
-  birthDate: number;
+  birthDate: Date;
   basicSalary: number;
   status: string;
   group: string;
-  description: number;
-  [key: string]: number | string;
+  description: Date;
+  [key: string]: number | string | Date | number;
 }
 
 @Component({
@@ -29,9 +28,10 @@ interface Employee {
   styleUrls: ['./employee-list.component.scss'],
 })
 export class EmployeeListComponent implements OnInit {
+  [x: string]: any;
   employees: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
-  pageSizeOptions: number[] = [10, 25, 50, 100];
-  pageSize: number = 5;
+  pageSizeOptions: number[] = [3, 5, 7, 8, 10];
+  pageSize: number = 10;
   currentPage: number = 1;
   totalItems: number = 0;
   searchText: string = '';
@@ -54,13 +54,21 @@ export class EmployeeListComponent implements OnInit {
   firstName: any;
   lastName: any;
   id: any;
+  email: any;
+  birthDate: any;
+  basicSalary: any;
+  status: any;
+  description: any;
 
   constructor(
     private router: Router,
-    private employeeService: EmployeeService
+    private employeeService: EmployeeService,
+    private _snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
+    this.paginator = this.paginator;
+    this.sort = this.sort;
     this.loadEmployees();
   }
 
@@ -69,11 +77,13 @@ export class EmployeeListComponent implements OnInit {
     const endIndex = startIndex + this.pageSize;
 
     // Use dataDummy.employee as the source of dummy data
-    const dummyData: Employee[] | any[] = dataDummy.employee;
+    const dummyData: Employee[] | any[] = this.employeeService.getDummyData();
 
     // Filter data based on search text
     const filteredData = dummyData.filter((employee) =>
-      employee.firstName.toLowerCase().includes(this.searchText.toLowerCase())
+      employee?.firstName
+        ?.toLowerCase()
+        .includes(this.searchText?.toLowerCase())
     );
 
     // Sort data based on the selected column and direction
@@ -81,16 +91,16 @@ export class EmployeeListComponent implements OnInit {
 
     // Get the total count after filtering
     this.totalItems = filteredData.length;
+    // this.totalItems = filteredData.length;
 
     // Paginate data based on the calculated start and end index
-    this.employees = new MatTableDataSource(
-      sortedData.slice(startIndex, endIndex)
-    );
+    const pageData = sortedData.slice(startIndex, endIndex);
+    this.employees = new MatTableDataSource(pageData);
     this.employees.paginator = this.paginator;
     this.employees.sort = this.sort;
   }
 
-  private sortData(data: Employee[]): Employee[] {
+  sortData(data: Employee[]): Employee[] {
     if (this.sortKey && this.sortDirection) {
       return data.sort((a, b) => {
         const aValue = a[this.sortKey];
@@ -108,8 +118,15 @@ export class EmployeeListComponent implements OnInit {
     return data;
   }
 
+  convertTimestampToDate(timestamp: number): string {
+    const date = new Date(timestamp);
+    const day = date.getDate();
+    const month = date.getMonth() + 1;
+    const year = date.getFullYear();
+    return `${day < 10 ? '0' : ''}${day}/${month < 10 ? '0' : ''}${month}/${year}`;
+  }
+
   onPageChange(event: PageEvent): void {
-    this.currentPage = event.pageIndex + 1;
     this.loadEmployees();
   }
 
@@ -157,13 +174,35 @@ export class EmployeeListComponent implements OnInit {
 
       // Show a notification or perform any other necessary actions
       console.log(`Employee with ID ${id} deleted successfully.`);
+      this.openSnackBar(`Employee with ID ${id} deleted successfully.`, 'Close');
     } else {
       // Handle the case when the employee with the given id is not found
       console.warn(`Employee with ID ${id} not found.`);
+      this.openSnackBar(`Employee with ID ${id} not found.`, 'Close');
     }
   }
 
+  formatCurrency(amount: number): string {
+    // Convert amount to string and split the integer and decimal parts
+    const parts = amount.toFixed(2).split('.');
+    const integerPart = parts[0];
+    const decimalPart = parts[1];
+  
+    // Add dots for thousand separators
+    const formattedIntegerPart = integerPart.replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+  
+    // Concatenate integer and decimal parts with currency symbol
+    return `Rp. ${formattedIntegerPart},${decimalPart}`;
+  }
+  
+
   onLogout() {
     this.router.navigateByUrl('/');
+  }
+
+  openSnackBar(message: string, action: string) {
+    this._snackBar.open(message, action, {
+      duration: 2000,
+    });
   }
 }

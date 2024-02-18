@@ -10,7 +10,7 @@
             type="text"
             name="firstname"
             id="firstname"
-            [(ngModel)]="employee.firstname"
+            [(ngModel)]="employee.firstName"
           />
         </mat-form-field>
       </td>
@@ -23,7 +23,7 @@
             type="text"
             name="lastname"
             id="lastname"
-            [(ngModel)]="employee.lastname"
+            [(ngModel)]="employee.lastName"
           />
         </mat-form-field>
       </td>
@@ -48,19 +48,24 @@
           <mat-label>Birthdate</mat-label>
           <input
             matInput
-            [matDatepicker]="picker"
+            [matDatepicker]="pickerBirthdate"
             [max]="todayDate"
             id="birthdate"
             name="birthdate"
             class="ml-5 mr-10"
-            [(ngModel)]="employee.birthdate"
+            (dateChange)="updateEmployeeBirthDate($event.target.value)"
+            [value]="
+              type === 'add'
+                ? updateEmployeeBirthDate(employee.birthDate)
+                : convertTimestampToDate(employee.birthDate)
+            "
           />
           <mat-hint>MM/DD/YYYY</mat-hint>
           <mat-datepicker-toggle
             matIconSuffix
-            [for]="picker"
+            [for]="pickerBirthdate"
           ></mat-datepicker-toggle>
-          <mat-datepicker #picker></mat-datepicker>
+          <mat-datepicker #pickerBirthdate></mat-datepicker>
         </mat-form-field>
       </td>
     </tr>
@@ -74,7 +79,7 @@
             type="number"
             id="basicsalary"
             name="basicsalary"
-            [(ngModel)]="employee.basicsalary"
+            [(ngModel)]="employee.basicSalary"
             placeholder="10000000"
           />
         </mat-form-field>
@@ -89,9 +94,9 @@
             [(ngModel)]="employee.status"
           >
             <mat-option>None</mat-option>
-            <mat-option value="Married">Married</mat-option>
-            <mat-option value="Single">Single</mat-option>
-            <mat-option value="Other">Other</mat-option>
+            <mat-option value="married">Married</mat-option>
+            <mat-option value="single">Single</mat-option>
+            <mat-option value="other">Other</mat-option>
           </mat-select>
         </mat-form-field>
       </td>
@@ -108,6 +113,7 @@
             [matAutocomplete]="auto"
             [formControl]="groupControl"
             (input)="filterGroups($event)"
+            [(ngModel)]="employee.group"
           />
           <mat-autocomplete
             autoActiveFirstOption
@@ -119,42 +125,30 @@
             </mat-option>
           </mat-autocomplete>
         </mat-form-field>
-
-        <!-- <mat-form-field class="example-full-width">
-          <mat-label>Group</mat-label>
-          <mat-select
-            matSelect
-            [(value)]="selectedGroup"
-            [(ngModel)]="employee.group"
-          >
-            <input
-              matInput
-              type="text"
-              id="group"
-              name="group"
-              class="input-search-group"
-              placeholder="Search..."
-              onchange="filterGroups"
-            />
-
-            <mat-option *ngFor="let group of groups" [value]="group">
-              {{ group }}
-            </mat-option>
-          </mat-select>
-        </mat-form-field> -->
       </td>
       <td>
         <mat-form-field class="example-full-width">
           <mat-label>Description</mat-label>
-          <textarea
+          <input
             matInput
-            placeholder="Description..."
-            maxlength="150"
+            [matDatepicker]="pickerDescription"
             id="description"
+            [max]="todayDate"
             name="description"
-            [(ngModel)]="employee.description"
-          >
-          </textarea>
+            class="ml-5 mr-10"
+            (dateChange)="updateEmployeeDescription($event.target.value)"
+            [value]="
+              type === 'add'
+                ? updateEmployeeDescription(employee.description)
+                : convertTimestampToDate(employee.description)
+            "
+          />
+          <mat-hint>MM/DD/YYYY</mat-hint>
+          <mat-datepicker-toggle
+            matIconSuffix
+            [for]="pickerDescription"
+          ></mat-datepicker-toggle>
+          <mat-datepicker #pickerDescription></mat-datepicker>
         </mat-form-field>
       </td>
     </tr>
