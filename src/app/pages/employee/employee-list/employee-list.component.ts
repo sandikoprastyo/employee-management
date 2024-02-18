@@ -30,10 +30,10 @@ interface Employee {
 export class EmployeeListComponent implements OnInit {
   [x: string]: any;
   employees: MatTableDataSource<Employee> = new MatTableDataSource<Employee>();
-  pageSizeOptions: number[] = [3, 5, 7, 8, 10];
-  pageSize: number = 10;
+  pageSizeOptions: number[] = [5, 10, 15, 25, 50];
+  pageSize: number = 100;
   currentPage: number = 1;
-  totalItems: number = 0;
+  totalItems: number = 100;
   searchText: string = '';
   sortKey: string = '';
   sortDirection: string = 'asc';
@@ -78,20 +78,18 @@ export class EmployeeListComponent implements OnInit {
 
     // Use dataDummy.employee as the source of dummy data
     const dummyData: Employee[] | any[] = this.employeeService.getDummyData();
-
     // Filter data based on search text
     const filteredData = dummyData.filter((employee) =>
-      employee?.firstName
-        ?.toLowerCase()
-        .includes(this.searchText?.toLowerCase())
+    employee?.firstName
+    ?.toLowerCase()
+    .includes(this.searchText?.toLowerCase())
     );
-
+    
     // Sort data based on the selected column and direction
     const sortedData = this.sortData(filteredData);
 
     // Get the total count after filtering
     this.totalItems = filteredData.length;
-    // this.totalItems = filteredData.length;
 
     // Paginate data based on the calculated start and end index
     const pageData = sortedData.slice(startIndex, endIndex);
@@ -127,6 +125,7 @@ export class EmployeeListComponent implements OnInit {
   }
 
   onPageChange(event: PageEvent): void {
+    console.log(event)
     this.loadEmployees();
   }
 
