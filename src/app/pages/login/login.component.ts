@@ -29,6 +29,8 @@ export class LoginComponent {
             isLogin: this.isLogin
           }
         };
+        localStorage.setItem('token', '123');
+
         this.router.navigateByUrl('/dashboard', navigationExtras);
       } else {
         return (this.errMsg = 'Please enter valid username or password');
